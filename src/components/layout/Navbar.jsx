@@ -4,7 +4,7 @@ import Logo from "../../assets/Logo.svg";
 const Navbar = () => {
   return (
     <nav class="flex justify-center border-gray-200">
-      <div class="w-full md:w-4/5 flex flex-wrap items-center justify-between mx-4 py-3 px-6 md:px-8 md:py-8 mt-4 rounded-xl bg-Secondary/5">
+      <div class="w-full md:w-4/5 flex flex-wrap items-center justify-between mx-4 py-3  md:py-8 mt-4 rounded-xl font-primary">
         <a href="/">
           <img src={Logo} alt="MY-HOME Logo" className="max-w-32 md:max-w-44" />
         </a>
