@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import ListingCard from "../components/util/ListingCard";
+import Properties from "../PropertyData/properties";
 
 const Home = () => {
   const [viewItems, setViewItems] = useState("all");
+  const [properties, setProperties] = useState([]);
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  useEffect(() => {
+    filterProperties();
+  }, [viewItems]);
+
+  const filterProperties = () => {
+    if (viewItems === "all") {
+      setProperties(Properties);
+    } else {
+      const filtered = Properties.filter((item) => item.type === viewItems);
+      setProperties(filtered);
+    }
+  };
 
   return (
     <>
@@ -20,7 +29,7 @@ const Home = () => {
             className="w-full h-full object-cover"
           />
 
-          <div className="text-Secondary text-5xl font-secondary font-bold absolute bg-white capitalize py-4 bottom-20 px-8 flex flex-col gap-3 rounded-r-xl leading-tight w-1/2">
+          <div className="text-Secondary text-3xl sm:text-5xl font-secondary font-bold absolute bg-white capitalize py-4 top-40 px-8 flex flex-col gap-3 rounded-r-xl leading-tight w-4/5 lg:w-1/2">
             <p>Making your real estate dream reality</p>
           </div>
         </div>
@@ -38,37 +47,43 @@ const Home = () => {
           </span>
           <span
             onClick={() => {
-              setViewItems("forSell");
+              setViewItems("sell");
             }}
             className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium ${
-              viewItems === "forSell"
-                ? "text-white bg-Primary"
-                : "text-body-color"
+              viewItems === "sell" ? "text-white bg-Primary" : "text-body-color"
             }`}
           >
             For Sell
           </span>
           <span
             onClick={() => {
-              setViewItems("forRent");
+              setViewItems("rent");
             }}
             className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium ${
-              viewItems === "forRent"
-                ? "text-white bg-Primary"
-                : "text-body-color"
+              viewItems === "rent" ? "text-white bg-Primary" : "text-body-color"
             }`}
           >
             For Rent
           </span>
         </label>
 
-        <div className="grid grid-cols-3 gap-8 w-full">
-          <ListingCard />
-          <ListingCard />
-          <ListingCard />
-          <ListingCard />
-          <ListingCard />
-          <ListingCard />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          {properties?.map((item) => {
+            return (
+              <ListingCard
+                key={item.id}
+                path={`/property/${item.id}`}
+                type={item.type}
+                bannerImage={item.images[0]}
+                price={item.price}
+                location={item.location}
+                area={item.sqft}
+                bedRoom={item.bedrooms}
+                bathRoom={item.bathrooms}
+                parking={3}
+              />
+            );
+          })}
         </div>
 
         {/* Pagination */}
